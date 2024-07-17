@@ -5,14 +5,16 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 
-app.use(cors());  // CORS 문제 해결
+app.use(cors());
 
+// API endpoint to get sentences data
 app.get('/sentences', (req, res) => {
     db.query('SELECT * FROM sentences', function (err, results) {
         if (err) {
-            return res.status(500).send(err);
+            console.error('Error fetching sentences:', err);
+            return res.status(500).send('Error fetching sentences');
         }
-        res.send(results);
+        res.json(results); // Send JSON response with the queried data
     });
 });
 

@@ -7,6 +7,7 @@ import AddSentence from './components/AddSentence';
 import Header from './components/Header';
 import styled from 'styled-components';
 import AddWord from "./components/AddWord";
+import Sentences from "./components/Sentences";
 
 const AppContainer = styled.div`
     padding-top: 60px; /* Header height */
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/writing" element={<Writing />} />
                     <Route path="/words" element={<Words />} />
+                    <Route path="/sentences" element={<Sentences />} />
                     <Route path="/add-sentence" element={<AddSentence />} />
                     <Route path="/add-word" element={<AddWord />} />
                 </Routes>

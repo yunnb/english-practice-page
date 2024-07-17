@@ -25,6 +25,7 @@ function Home() {
                 <h1> </h1>
                 <MenuButton onClick={() => navigate('/writing')}>✒️ Writing</MenuButton>
                 <MenuButton onClick={() => navigate('/words')}>📖 Words</MenuButton>
+                <MenuButton onClick={() => navigate('/sentences')}>📖 Sentences</MenuButton>
                 <MenuButton onClick={() => navigate('/add-sentence')}>➕ Add Sentence</MenuButton>
             </InputWrapper>
         </WholeStyle>
