@@ -9,6 +9,10 @@ function Words() {
         <WholeStyle>
             <h2>Words</h2>
             <Button1 onClick={() => navigate('/add-word')}>Add word</Button1>
+            <table border=''>
+                <tr><th>word</th><th>meaning</th></tr>
+                <tr><td>word1</td><td>뜻1</td></tr>
+            </table>
         </WholeStyle>
     );
 };

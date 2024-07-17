@@ -12,9 +12,8 @@ export const Textarea = styled.textarea`
     font-family: Arial;
     font-size: 1em;
 
-    box-shadow: 0 1px 7px gray;
-    border-radius: 10px;
-    border: none;
+    border-radius: 7px;
+    border: 1px solid seagreen;
     
     margin-bottom: 10px;
     padding: 10px;
@@ -24,12 +23,14 @@ export const Textarea = styled.textarea`
 
 export const Button1 = styled.button`
     width: 120px;
-    height: 30px;
+    height: 35px;
 
-    box-shadow: 0 1px 5px gray;
-    border-radius: 10px;
     border: none;
-  
+    border-radius: 7px;
+    
+    color: white;
+    background-color: darkseagreen;
+
     margin-top: 3px;
     margin-left: auto;
 `;
