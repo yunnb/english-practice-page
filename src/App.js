@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import Writing from './components/Writing';
+import Words from './components/Words';
+import AddSentence from './components/AddSentence';
+import Header from './components/Header';
+import styled from 'styled-components';
+import AddWord from "./components/AddWord";
+
+const AppContainer = styled.div`
+    padding-top: 60px; /* Header height */
+`;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Header />
+            <AppContainer>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/writing" element={<Writing />} />
+                    <Route path="/words" element={<Words />} />
+                    <Route path="/add-sentence" element={<AddSentence />} />
+                    <Route path="/add-word" element={<AddWord />} />
+                </Routes>
+            </AppContainer>
+        </Router>
+    );
 }
 
 export default App;
