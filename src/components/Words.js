@@ -1,18 +1,50 @@
-import React from "react";
-import {Button1} from "../style/Textarea";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import {Button1, ButtonWrapper, Table} from "../style/Components";
 import {useNavigate} from "react-router-dom";
 import {WholeStyle} from "../style/WholeStyle";
 
 function Words() {
     const navigate = useNavigate();
+    const [words, setWords] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/words')
+            .then(response => {
+                console.log(response.data);
+                setWords(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching words: ', error);
+            })
+    }, []);
+
     return (
         <WholeStyle>
             <h2>Words</h2>
-            <Button1 onClick={() => navigate('/add-word')}>Add word</Button1>
-            <table border=''>
-                <tr><th>word</th><th>meaning</th></tr>
-                <tr><td>word1</td><td>뜻1</td></tr>
-            </table>
+            <ButtonWrapper>
+                <Button1 onClick={() => navigate('/add-word')}>Add word</Button1>
+            </ButtonWrapper>
+            <Table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Word</th>
+                    <th>Meaning</th>
+                </tr>
+                </thead>
+                <tbody>
+                {words.map(words => (
+                    <React.Fragment key={words.id}>
+                        <tr id='underline'>
+                            <td id='id'>{words.id}</td>
+                            <td>{words.word}</td>
+                            <td>{words.meaning}</td>
+                        </tr>
+                    </React.Fragment>
+                ))}
+                </tbody>
+            </Table>
         </WholeStyle>
     );
 };

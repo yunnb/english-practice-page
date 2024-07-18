@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {InputWrapper} from "../style/Textarea";
+import {InputWrapper} from "../style/Components";
 import {WholeStyle} from "../style/WholeStyle";
 import styled from "styled-components";
 

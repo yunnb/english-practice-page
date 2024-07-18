@@ -20,6 +20,11 @@ export const Textarea = styled.textarea`
 
     resize: none;
 `;
+export const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+`;
 
 export const Button1 = styled.button`
     width: 120px;
@@ -27,10 +32,35 @@ export const Button1 = styled.button`
 
     border: none;
     border-radius: 7px;
-    
+
     color: white;
     background-color: darkseagreen;
 
-    margin-top: 3px;
     margin-left: auto;
+
+    ${({sideMargin}) => sideMargin && `
+        margin-left: 10px; 
+    `};
+`;
+
+export const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        border-bottom: 1px solid seagreen;
+        padding: 10px;
+    }
+
+    td {
+        padding: 5px;
+    }
+
+    #id {
+        text-align: center;
+    }
+
+    #underline {
+        border-bottom: 1px dashed darkseagreen;
+    }
 `;

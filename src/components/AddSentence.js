@@ -1,5 +1,5 @@
 import React from "react";
-import {Textarea, InputWrapper, Button1} from "../style/Textarea";
+import {Textarea, InputWrapper, Button1} from "../style/Components";
 import {WholeStyle} from "../style/WholeStyle";
 
 function AddSentence() {

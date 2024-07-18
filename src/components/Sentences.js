@@ -1,27 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import axios from "axios";
 import { WholeStyle } from "../style/WholeStyle";
+import {Table} from "../style/Components";
 
-const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-    
-    th {
-        border-bottom: 1px solid seagreen;
-        padding: 10px;
-    }
-    td {
-        padding: 5px;
-    }
-    
-    #id {
-        text-align: center;
-    }
-    #e {
-        border-bottom: 1px solid darkseagreen;
-    }
-`;
 function Sentences() {
     const [sentences, setSentences] = useState([]);
 
@@ -32,7 +13,7 @@ function Sentences() {
                 setSentences(response.data);
             })
             .catch(error => {
-                console.error('Error fetching sentences:', error);
+                console.error('Error fetching sentences: ', error);
             });
     }, []);
 
@@ -53,7 +34,7 @@ function Sentences() {
                             <td rowSpan="2" id='id'>{sentence.id}</td>
                             <td>{sentence.korean_text}</td>
                         </tr>
-                        <tr id='e'>
+                        <tr id='underline'>
                             <td>{sentence.english_text}</td>
                         </tr>
                     </React.Fragment>
