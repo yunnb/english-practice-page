@@ -1,8 +1,24 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import axios from "axios";
 import {Button1, ButtonWrapper, Table} from "../style/Components";
 import {useNavigate} from "react-router-dom";
 import {WholeStyle} from "../style/WholeStyle";
+
+function Word({word}) {
+    const onDoubleClick = (e => {
+        console.log(e.target);
+
+    });
+    return (
+        <>
+            <tr id='underline' onDoubleClick={onDoubleClick}>
+                <td id='id'>{word.id}</td>
+                <td>{word.word}</td>
+                <td>{word.meaning}</td>
+            </tr>
+        </>
+    );
+}
 
 function Words() {
     const navigate = useNavigate();
@@ -35,13 +51,7 @@ function Words() {
                 </thead>
                 <tbody>
                 {words.map(words => (
-                    <React.Fragment key={words.id}>
-                        <tr id='underline'>
-                            <td id='id'>{words.id}</td>
-                            <td>{words.word}</td>
-                            <td>{words.meaning}</td>
-                        </tr>
-                    </React.Fragment>
+                    <Word word={words} />
                 ))}
                 </tbody>
             </Table>

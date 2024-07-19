@@ -10,6 +10,8 @@ function AddWord() {
         note: '',
     });
 
+    const {word, meaning, note} = inputs;
+
     // 해당 textarea 만 렌더링되도록 최적화 필요
     const onChange = useCallback(e => {
         const {name, value} = e.target;
@@ -19,7 +21,6 @@ function AddWord() {
             [name]: value
         });
     }, [inputs]);
-
     const handleAddButton = async () => {
         try {
             const response = await axios.post('http://localhost:3001/words', inputs);
@@ -33,8 +34,6 @@ function AddWord() {
         } catch (error) {console.error('Error adding word: ', error);}
 
     };
-
-    const {word, meaning, note} = inputs;
     return (
         <WholeStyle>
             <InputWrapper>

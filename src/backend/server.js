@@ -46,6 +46,16 @@ app.get('/reviews', (req, res) => {
     });
 });
 
+// Sentences 삽입 API
+app.post('/sentences', (req, res) => {
+    const { korean_text, english_text, note } = req.body;
+    const query = 'INSERT INTO sentences (korean_text, english_text, note) VALUES (?, ?, ?)';
+    db.query(query, [korean_text, english_text, note], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.status(201).send({ id: results.insertId, korean_text, english_text, note });
+    });
+});
+
 // Words 삽입 API
 app.post('/words', (req, res) => {
     const { word, meaning, note } = req.body;
