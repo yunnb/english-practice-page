@@ -7,7 +7,6 @@ import {WholeStyle} from "../style/WholeStyle";
 function Word({word}) {
     const onDoubleClick = (e => {
         console.log(e.target);
-
     });
     return (
         <>

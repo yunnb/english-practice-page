@@ -1,43 +1,37 @@
 const express = require('express');
-// Express: Node.js 를 위한 빠르고 간단한 웹 프레임 워크
-// -> 주로 웹 애플리케이션이나 API 를 쉽게 구축하기 위해 사용
 const db = require('./database/db');
 const cors = require('cors');
-// CORS: 브라우저에서 다른 도메인에서 리소스 요청 시 발생하는 보안 정책
-// -> React 앱이 port 3000 에서, API 서버가 3001 에서 실행될 때
-// 기본적으로 이를 차단하지만 허용하도록 함
-
 const bodyParser = require('body-parser');
-const app = express(); // express 앱 생성
+const app = express();
 const port = 3001;
 
-app.use(cors());  // CORS 문제 해결
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get: '/' 경로로 GET 요청이 들어왔을 때 실행될 핸들러
-// db.query: SQL 쿼리문. 콜백함수는 쿼리 실행 후 호출
+// 문장 조회 API
 app.get('/sentences', (req, res) => {
-    db.query('SELECT * FROM sentences', function (err, results) {
-        if (err) return res.status(500).send(err);  // 에러 발생 시 500 상태 코드와 에러 메시지 전송
-        res.send(results);  // 쿼리 결과를 클라이언트에 보냄
-    });
-});
-
-app.get('/words', (req, res) => {
-    db.query('SELECT * FROM words', function (err, results) {
+    db.query('SELECT * FROM sentences', (err, results) => {
         if (err) return res.status(500).send(err);
         res.send(results);
     });
 });
 
-// Reviews 조회 API (Sentences 와 함께 조회)
-app.get('/reviews', (req, res) => {
+// 단어 조회 API
+app.get('/words', (req, res) => {
+    db.query('SELECT * FROM words', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+
+// 문장과 리뷰를 함께 조회하는 API
+app.get('/sentences-with-reviews', (req, res) => {
     const query = `
-        SELECT r.id, r.user_answer, r.correct, r.review_date, r.review_count, 
-               s.korean_text, s.english_text 
-        FROM review r
-        JOIN sentences s ON r.sentence_id = s.id
+        SELECT s.*, r.review_date
+        FROM sentences s
+                 LEFT JOIN review r ON s.id = r.sentence_id
+        ORDER BY r.review_date ASC
     `;
 
     db.query(query, (err, results) => {
@@ -46,27 +40,60 @@ app.get('/reviews', (req, res) => {
     });
 });
 
-// Sentences 삽입 API
+// 문장 추가 API
 app.post('/sentences', (req, res) => {
     const { korean_text, english_text, note } = req.body;
     const query = 'INSERT INTO sentences (korean_text, english_text, note) VALUES (?, ?, ?)';
+
     db.query(query, [korean_text, english_text, note], (err, results) => {
         if (err) return res.status(500).send(err);
-        res.status(201).send({ id: results.insertId, korean_text, english_text, note });
+
+        const sentence_id = results.insertId;
+
+        // 문장 추가 후 기본 리뷰 항목 생성
+        const reviewQuery = `
+            INSERT INTO review (sentence_id, review_date, review_count)
+            VALUES (?, NOW(), 0)
+            ON DUPLICATE KEY UPDATE
+                review_date = VALUES(review_date),
+                review_count = review_count
+        `;
+        db.query(reviewQuery, [sentence_id], (err) => {
+            if (err) return res.status(500).send(err);
+
+            res.status(201).send({ id: sentence_id, korean_text, english_text, note });
+        });
     });
 });
 
-// Words 삽입 API
+// 리뷰 업데이트 API
+app.post('/review', (req, res) => {
+    const { sentence_id } = req.body;
+
+    // 리뷰 업데이트 쿼리
+    const query = `
+        UPDATE review
+        SET review_date = NOW(), review_count = review_count + 1
+        WHERE sentence_id = ?;
+    `;
+
+    db.query(query, [sentence_id], (err) => {
+        if (err) return res.status(500).send(err);
+        res.status(200).send({ message: `Review updated successfully: ${sentence_id}` });
+    });
+});
+
+// 단어 추가 API
 app.post('/words', (req, res) => {
     const { word, meaning, note } = req.body;
     const query = 'INSERT INTO words (word, meaning, note) VALUES (?, ?, ?)';
+
     db.query(query, [word, meaning, note], (err, results) => {
         if (err) return res.status(500).send(err);
         res.status(201).send({ id: results.insertId, word, meaning, note });
     });
 });
 
-// app.listen: 서버를 port 번호에서 시작. 서버 시작 시 메시지를 콘솔에 출력
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

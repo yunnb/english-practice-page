@@ -1,7 +1,7 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
-import {Textarea, InputWrapper, Button1} from "../style/Components";
-import {WholeStyle} from "../style/WholeStyle";
+import { Textarea, InputWrapper, Button1 } from "../style/Components";
+import { WholeStyle } from "../style/WholeStyle";
 
 function AddSentence() {
     const [inputs, setInputs] = useState({
@@ -10,28 +10,29 @@ function AddSentence() {
         note: '',
     });
 
-    const {korean_text, english_text, note} = inputs;
+    const { korean_text, english_text, note } = inputs;
 
     const onChange = useCallback(e => {
-        const {name, value} = e.target;
-
+        const { name, value } = e.target;
         setInputs({
             ...inputs,
             [name]: value,
-        })
+        });
     }, [inputs]);
 
     const handleAddButton = async () => {
         try {
             const response = await axios.post('http://localhost:3001/sentences', inputs);
-            console.log('Sentence add: ', response.data);
+            console.log('Sentence added: ', response.data);
 
             setInputs({
                 korean_text: '',
                 english_text: '',
                 note: '',
-            })
-        } catch (error) {console.error('Error adding sentences: ', error);}
+            });
+        } catch (error) {
+            console.error('Error adding sentences: ', error);
+        }
     };
 
     return (
@@ -66,4 +67,3 @@ function AddSentence() {
 }
 
 export default AddSentence;
-
