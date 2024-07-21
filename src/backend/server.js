@@ -31,7 +31,7 @@ app.get('/sentences-with-reviews', (req, res) => {
         SELECT s.*, r.review_date
         FROM sentences s
                  LEFT JOIN review r ON s.id = r.sentence_id
-        ORDER BY r.review_date ASC
+        ORDER BY r.review_date ASC  /*가장 오래된 복습 날짜가 먼저 오도록. 오름차순*/
     `;
 
     db.query(query, (err, results) => {
@@ -67,7 +67,7 @@ app.post('/sentences', (req, res) => {
 });
 
 // 리뷰 업데이트 API
-app.post('/review', (req, res) => {
+app.patch('/review', (req, res) => {
     const { sentence_id } = req.body;
 
     // 리뷰 업데이트 쿼리

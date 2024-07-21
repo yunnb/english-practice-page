@@ -8,20 +8,17 @@ function Writing() {
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0); // 현재 표시 중인 문장의 인덱스
     const [userAnswer, setUserAnswer] = useState("");  // 사용자 답변
     const [showAnswer, setShowAnswer] = useState(false); // 정답 표시 여부
-    const [isCorrect, setIsCorrect] = useState(false)
+    const [isCorrect, setIsCorrect] = useState(false);  // 정답 여부
 
     useEffect(() => {
-        // 병렬로 API 호출
         const fetchData = async () => {
             try {
+                // async 와 await 는 주로 비동기 함수 내에서 동기적인 코드를 사용해야 할 때 사용됨
+                // async 함수 내에서 await 키워드를 사용하여 비동기 작업의 완료를 기다리고, 이후 코드를 동기적으로 실행 가능
                 const response = await axios.get('http://localhost:3001/sentences-with-reviews');
-                console.log('Sentences with Reviews Response:', response.data);
+                console.log('Sentences with Reviews Response:', response.data);  // 날짜 기준 오름차순으로 정렬된 데이터
 
-                // 데이터 처리
-                const sortedSentences = response.data; // 이미 서버에서 정렬됨
-                console.log('Sorted Sentences:', sortedSentences);
-
-                setSentences(sortedSentences);
+                setSentences(response.data);
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
@@ -30,18 +27,18 @@ function Writing() {
         fetchData();
     }, []);
 
-    const handleTryAgain = () => {
+    const onClickTryAgainHandler = () => {
         setShowAnswer(false);
         setUserAnswer('')
     }
 
-    const handleNext = () => {
+    const onClickNextHandler = () => {
         setShowAnswer(false);
         setUserAnswer('');
-        setCurrentSentenceIndex((prevIndex) => (prevIndex + 1) % sentences.length);
+        setCurrentSentenceIndex(prevIndex => (prevIndex + 1) % sentences.length);
     };
 
-    const handleCheck = async () => {
+    const onClickCheckHandler = async () => {
         const normalize = (str) => str.toLowerCase().trim().replace(/[‘’]/g, "'");
 
         const currentSentence = sentences[currentSentenceIndex]
@@ -52,7 +49,7 @@ function Writing() {
             console.log(`user: ${user}, answer: ${answer} -> is correct.`);
             setIsCorrect(true);
             try {
-                const response = await axios.post('http://localhost:3001/review'
+                const response = await axios.patch('http://localhost:3001/review'
                     , {sentence_id: currentSentence.id});
 
                 console.log('Review updated: ', response.data);
@@ -67,7 +64,7 @@ function Writing() {
         setShowAnswer(true);
     };
 
-    const handleChange = (e) => {
+    const changeHandler = (e) => {
         setUserAnswer(e.target.value);
     };
 
@@ -81,12 +78,12 @@ function Writing() {
                         rows='4'
                         placeholder=' '
                         value={userAnswer}
-                        onChange={handleChange}
+                        onChange={changeHandler}
                     />
                     <ButtonWrapper>
-                        <Button1 sideMargin onClick={handleTryAgain}>Try again</Button1>
-                        <Button1 sideMargin onClick={handleNext}>Next</Button1>
-                        <Button1 sideMargin onClick={handleCheck}>Check</Button1>
+                        <Button1 sideMargin onClick={onClickTryAgainHandler}>Try again</Button1>
+                        <Button1 sideMargin onClick={onClickNextHandler}>Next</Button1>
+                        <Button1 sideMargin onClick={onClickCheckHandler}>Check</Button1>
                     </ButtonWrapper>
                     {showAnswer && (
                         <>
