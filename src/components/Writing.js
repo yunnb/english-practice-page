@@ -3,6 +3,34 @@ import axios from 'axios';
 import { WholeStyle } from "../style/WholeStyle";
 import { Button1, ButtonWrapper, Textarea } from "../style/Components";
 
+function Answer({isCorrect, sentence }) {
+    const [isEdit, setIsEdit] = useState(true);
+
+    const onClickEditHandler = () => {
+        setIsEdit(false);
+        console.log('click edit button: ', isEdit);
+    };
+
+
+    return (
+        <>
+            {isCorrect ? (<span>Correct answer!</span>) : (<span>Wrong answer!</span>)}
+
+            <p><b>Correct Answer:</b></p>
+            <Textarea value={sentence.english_text} readOnly={true}
+                      style={{
+                          userSelect: 'none',          // 모든 브라우저에서 텍스트 선택 비활성화
+                          WebkitUserSelect: 'none',    // Chrome, Safari, Opera
+                      }}
+            />
+            <p><b>Note:</b></p>
+            <Textarea rows='5' value={sentence.note} readOnly={isEdit}/>
+
+            <Button1 onClick={onClickEditHandler}> {isEdit ? 'Edit' : 'Complete'} </Button1>
+        </>
+    );
+}
+
 function Writing() {
     const [sentences, setSentences] = useState([]);  // 문장 목록 저장
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0); // 현재 표시 중인 문장의 인덱스
@@ -73,7 +101,7 @@ function Writing() {
             <h2>Writing</h2>
             {sentences.length > 0 ? (
                 <>
-                    <p>{sentences[currentSentenceIndex].korean_text}</p>
+                    <p>{sentences[currentSentenceIndex].id}. {sentences[currentSentenceIndex].korean_text}</p>
                     <Textarea
                         rows='4'
                         placeholder=' '
@@ -85,14 +113,10 @@ function Writing() {
                         <Button1 sideMargin onClick={onClickNextHandler}>Next</Button1>
                         <Button1 sideMargin onClick={onClickCheckHandler}>Check</Button1>
                     </ButtonWrapper>
-                    {showAnswer && (
-                        <>
-                            {isCorrect ? (<span>Correct answer!</span>) : (<span>Wrong answer!</span>)}
-                            <p><b>Correct Answer:</b></p>
-                            {sentences[currentSentenceIndex].english_text}
-                            <p><b>Note:</b></p> {sentences[currentSentenceIndex].note}
-                        </>
-                    )}
+                    {showAnswer &&
+                            <Answer isCorrect={isCorrect} sentence={sentences[currentSentenceIndex]}
+                            />
+                    }
                 </>
             ) : (
                 <p>Loading sentences...</p>
