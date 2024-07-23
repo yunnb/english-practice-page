@@ -30,6 +30,8 @@ function AddSentence() {
                 english_text: '',
                 note: '',
             });
+
+            alert('문장이 추가되었습니다!');
         } catch (error) {
             console.error('Error adding sentences: ', error);
         }

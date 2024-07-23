@@ -23,12 +23,12 @@ function Answer({ sentence, onSaveNote }) {
     const [note, setNote] = useState(sentence.note || '');
     // 첫 번째 truthy 값 찾음. 없으면 마지막 값 반환
 
-    const onClickEditHandler = useCallback(() => {
-        if (isEditable) setIsEditable(false);
-        else {
-            onSaveNote(sentence.id, note);
+    const handleEdit = useCallback(() => {
+        if (isEditable) {
             setIsEditable(true);
+            onSaveNote(sentence.id, note);
         }
+        else setIsEditable(true);
     }, [isEditable, note, onSaveNote, setIsEditable, sentence.id]);
 
     const getDate = (reviewDate) => {
@@ -42,7 +42,7 @@ function Answer({ sentence, onSaveNote }) {
     return (
         <AnswerWrapper>
             <p><b>Correct Answer:</b></p>
-            <Textarea value={sentence.english_text}/>
+            <Textarea value={sentence.english_text} readOnly={true}/>
 
             <p><b>Note:</b></p>
             <Textarea
@@ -52,7 +52,7 @@ function Answer({ sentence, onSaveNote }) {
                 onChange={onChangeHandler}
             />
 
-            <Button1 onClick={onClickEditHandler}> {isEditable ? 'Complete' : 'Edit'} </Button1>
+            <Button1 onClick={handleEdit}>{isEditable ? 'Complete' : 'Edit'}</Button1>
             <span>last review: {getDate(sentence.review_date)} review count: {sentence.review_count}</span>
         </AnswerWrapper>
     );
@@ -169,11 +169,11 @@ function Writing() {
             />
             <ButtonWrapper>
                 {state.showAnswer &&
-                    <IsCorrectSpan isCorrect={state.isCorrect}>{state.isCorrect ? 'Correct answer!' : 'Wrong answer!'}</IsCorrectSpan>
+                    <IsCorrectSpan $isCorrect={state.isCorrect}>{state.isCorrect ? 'Correct answer!' : 'Wrong answer!'}</IsCorrectSpan>
                 }
-                <Button1 sidemargin onClick={handleTryAgain}>Try again</Button1>
-                <Button1 sidemargin onClick={handleNext}>Next</Button1>
-                <Button1 sidemargin onClick={handleCheck}>Check</Button1>
+                <Button1 $sideMargin onClick={handleTryAgain}>Try again</Button1>
+                <Button1 $sideMargin onClick={handleNext}>Next</Button1>
+                <Button1 $sideMargin onClick={handleCheck}>Check</Button1>
             </ButtonWrapper>
             {state.showAnswer && <Answer sentence={currentSentence} onSaveNote={handleSaveNote} />}
         </WholeStyle>

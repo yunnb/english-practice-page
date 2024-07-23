@@ -9,6 +9,7 @@ export const InputWrapper = styled.div`
     
 `;
 export const Textarea = styled.textarea`
+    font-family: 'Arial', 'Helvetica', sans-serif;
     font-size: 1em;
 
     border-radius: 7px;
@@ -27,11 +28,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 
-export const Button1 = styled.button.attrs(props => ({
-    // attr: 기본 HTML 속성 설정. props 필터링, 조건부 속성 설정 시 사용
-    // sidemargin 속성은 DOM에 전달되지 않도록 설정
-    sidemargin: undefined,
-}))`
+export const Button1 = styled.button`
     width: 120px;
     height: 35px;
 
@@ -43,7 +40,7 @@ export const Button1 = styled.button.attrs(props => ({
 
     margin-left: auto;
 
-    ${({ sidemargin }) => sidemargin && `
+    ${({ $sideMargin }) => $sideMargin && `
       margin-left: 10px; 
   `}
 `;
@@ -61,11 +58,11 @@ export const Table = styled.table`
         padding: 5px;
     }
 
-    #id {
+    .id {
         text-align: center;
     }
 
-    #underline {
+    .underline {
         border-bottom: 1px dashed darkseagreen;
     }
 `;

@@ -12,7 +12,6 @@ function AddWord() {
 
     const {word, meaning, note} = inputs;
 
-    // 해당 textarea 만 렌더링되도록 최적화 필요
     const onChange = useCallback(e => {
         const {name, value} = e.target;
 
@@ -31,8 +30,9 @@ function AddWord() {
                 meaning: '',
                 note: '',
             })
-        } catch (error) {console.error('Error adding word: ', error);}
 
+            alert('단어가 추가되었습니다!');
+        } catch (error) {console.error('Error adding word: ', error);}
     };
     return (
         <WholeStyle>

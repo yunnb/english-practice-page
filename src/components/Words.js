@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
+import Modal from "react-modal";
 import axios from "axios";
 import {Button1, ButtonWrapper, Table} from "../style/Components";
 import {useNavigate} from "react-router-dom";
@@ -10,8 +11,8 @@ function Word({word}) {
     });
     return (
         <>
-            <tr id='underline' onDoubleClick={onDoubleClick}>
-                <td id='id'>{word.id}</td>
+            <tr className='underline' onDoubleClick={onDoubleClick}>
+                <td className='id'>{word.id}</td>
                 <td>{word.word}</td>
                 <td>{word.meaning}</td>
             </tr>
@@ -49,8 +50,8 @@ function Words() {
                 </tr>
                 </thead>
                 <tbody>
-                {words.map(words => (
-                    <Word word={words} />
+                {words.map(word => (
+                    <Word key={word.id} word={word} />
                 ))}
                 </tbody>
             </Table>
