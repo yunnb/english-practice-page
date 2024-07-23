@@ -27,14 +27,13 @@ function Answer({ sentence, onSaveNote }) {
         console.log(note);
 
         if (isEdit) {
+            console.log('isEdit: ', isEdit);
+            setIsEdit(false)
+        } else {
             onSaveNote(sentence.id, note);
             console.log('isEdit: ', isEdit);
-            setIsEdit(false);
-        } else {
-            console.log('isEdit: ', isEdit);
-            setIsEdit(true)
+            setIsEdit(true);
         }
-
     };
 
     const getDate = (reviewDate) => {
@@ -51,7 +50,7 @@ function Answer({ sentence, onSaveNote }) {
             <Textarea value={sentence.english_text} readOnly={true}/>
 
             <p><b>Note:</b></p>
-            <Textarea rows='5' value={sentence.note} readOnly={isEdit} onChange={onChangeHandler}/>
+            <Textarea rows='5' value={sentence.note} readOnly={!isEdit} onChange={onChangeHandler}/>
 
             <Button1 onClick={onClickEditHandler}> {isEdit ? 'Edit' : 'Complete'} </Button1>
             <span>last review: {getDate(sentence.review_date)} review count: {sentence.review_count}</span>
@@ -116,7 +115,7 @@ function Writing() {
     };
 
     const setNormalize = (str) => {
-        return (str) => str.toLowerCase().trim().replace(/[‘’]/g, "'");
+        return str.toLowerCase().trim().replace(/[‘’]/g, "'");
     }
 
     const handleCheck = async () => {
@@ -142,7 +141,6 @@ function Writing() {
 
     const handleUserAnswerChange = (e) => {
         dispatch({type: 'SET_USER_ANSWER', payload: e.target.value});
-
     };
 
     const handleSaveNote = async (id, note) => {
