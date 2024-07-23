@@ -171,9 +171,9 @@ function Writing() {
                 {state.showAnswer &&
                     <IsCorrectSpan isCorrect={state.isCorrect}>{state.isCorrect ? 'Correct answer!' : 'Wrong answer!'}</IsCorrectSpan>
                 }
-                <Button1 sideMargin onClick={handleTryAgain}>Try again</Button1>
-                <Button1 sideMargin onClick={handleNext}>Next</Button1>
-                <Button1 sideMargin onClick={handleCheck}>Check</Button1>
+                <Button1 sidemargin onClick={handleTryAgain}>Try again</Button1>
+                <Button1 sidemargin onClick={handleNext}>Next</Button1>
+                <Button1 sidemargin onClick={handleCheck}>Check</Button1>
             </ButtonWrapper>
             {state.showAnswer && <Answer sentence={currentSentence} onSaveNote={handleSaveNote} />}
         </WholeStyle>
