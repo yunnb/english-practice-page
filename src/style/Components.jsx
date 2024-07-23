@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 
 export const InputWrapper = styled.div`
@@ -9,7 +9,6 @@ export const InputWrapper = styled.div`
     
 `;
 export const Textarea = styled.textarea`
-    font-family: Arial;
     font-size: 1em;
 
     border-radius: 7px;
