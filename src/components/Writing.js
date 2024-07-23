@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from "react";
+import React, {useState, useEffect, useReducer, useCallback} from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import { WholeStyle } from "../style/WholeStyle";
@@ -19,40 +19,40 @@ const AnswerWrapper = styled.div`
 `;
 
 function Answer({ sentence, onSaveNote }) {
-    const [isEdit, setIsEdit] = useState(true);
+    const [isEditable, setIsEditable] = useState(false);
     const [note, setNote] = useState(sentence.note || '');
     // 첫 번째 truthy 값 찾음. 없으면 마지막 값 반환
 
-    const onClickEditHandler = () => {
-        console.log(note);
-
-        if (isEdit) {
-            console.log('isEdit: ', isEdit);
-            setIsEdit(false)
-        } else {
+    const onClickEditHandler = useCallback(() => {
+        if (isEditable) setIsEditable(false);
+        else {
             onSaveNote(sentence.id, note);
-            console.log('isEdit: ', isEdit);
-            setIsEdit(true);
+            setIsEditable(true);
         }
-    };
+    }, [isEditable, note, onSaveNote, setIsEditable, sentence.id]);
 
     const getDate = (reviewDate) => {
         return new Date(reviewDate).toLocaleDateString();
     }
 
-    const onChangeHandler = (e) => {
+    const onChangeHandler = useCallback((e) => {
         setNote(e.target.value);
-    }
+    }, [setNote]);
 
     return (
         <AnswerWrapper>
             <p><b>Correct Answer:</b></p>
-            <Textarea value={sentence.english_text} readOnly={true}/>
+            <Textarea value={sentence.english_text}/>
 
             <p><b>Note:</b></p>
-            <Textarea rows='5' value={sentence.note} readOnly={!isEdit} onChange={onChangeHandler}/>
+            <Textarea
+                rows='5'
+                value={note}
+                readOnly={!isEditable}
+                onChange={onChangeHandler}
+            />
 
-            <Button1 onClick={onClickEditHandler}> {isEdit ? 'Edit' : 'Complete'} </Button1>
+            <Button1 onClick={onClickEditHandler}> {isEditable ? 'Complete' : 'Edit'} </Button1>
             <span>last review: {getDate(sentence.review_date)} review count: {sentence.review_count}</span>
         </AnswerWrapper>
     );
@@ -88,7 +88,6 @@ const reducer = (state, action) => {
     }
 }
 
-
 function Writing() {
     const [state, dispatch] = useReducer(reducer, initialState);
     const currentSentence = state.sentences[state.currentSentenceIndex];
@@ -107,11 +106,9 @@ function Writing() {
 
     const handleTryAgain = () => {
         dispatch({type: 'TRY_AGAIN'});
-
     }
     const handleNext = () => {
         dispatch({type: 'NEXT_SENTENCE'});
-
     };
 
     const setNormalize = (str) => {
