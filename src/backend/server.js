@@ -28,7 +28,7 @@ app.get('/words', (req, res) => {
 // 문장과 리뷰를 함께 조회하는 API
 app.get('/sentences-with-reviews', (req, res) => {
     const query = `
-        SELECT s.*, r.review_date
+        SELECT s.*, r.*
         FROM sentences s
                  LEFT JOIN review r ON s.id = r.sentence_id
         ORDER BY r.review_date ASC;  /*가장 오래된 복습 날짜가 먼저 오도록. 오름차순*/
@@ -63,6 +63,25 @@ app.post('/sentences', (req, res) => {
 
             res.status(201).send({ id: sentence_id, korean_text, english_text, note });
         });
+    });
+});
+
+app.patch('/sentences/:id', (req, res) => {
+    const {id} = req.params;  // 요청 URL 에서 'sentenceId' 추출
+    const {note} = req.body; // 요청 바디에서 note 추출
+
+    const query = `
+        UPDATE sentences
+        SET note = ?
+        WHERE id = ?;
+    `
+
+    db.query(query, [note, id], (err) => {
+        if (err) {
+            console.error('Error updating note:', err);
+            return res.status(500).send('Error updating note');
+        }
+        res.status(200).send({ message: `Note updated successfully for sentence ID: ${id}` });
     });
 });
 

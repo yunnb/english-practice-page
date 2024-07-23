@@ -14,12 +14,13 @@ export const Textarea = styled.textarea`
 
     border-radius: 7px;
     border: 1px solid seagreen;
-    
+
     margin-bottom: 10px;
     padding: 10px;
 
     resize: none;
 `;
+
 export const ButtonWrapper = styled.div`
     display: flex;
     flex-direction: row;
