@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { WholeStyle } from "../style/WholeStyle";
-import {Table} from "../style/Components";
+import { WholeStyle } from "../components/WholeStyle";
+import {Table} from "../components/Components";
 
 function Sentences() {
     const [sentences, setSentences] = useState([]);

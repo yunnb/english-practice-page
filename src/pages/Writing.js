@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useReducer, useCallback} from "react";
 import axios from 'axios';
 import styled from "styled-components";
-import { WholeStyle } from "../style/WholeStyle";
-import { Button1, ButtonWrapper, Textarea } from "../style/Components";
+import { WholeStyle } from "../components/WholeStyle";
+import { Button1, ButtonWrapper, Textarea } from "../components/Components";
 
 const IsCorrectSpan = styled.span`
     font-weight: bold;
     align-content: center;
     margin-right: auto;
 
-    color: ${props => props.isCorrect ? 'blue' : 'red'}
+    color: ${({$isCorrect}) => $isCorrect ? 'blue' : 'red'}
 `;
 
 const AnswerWrapper = styled.div`
@@ -25,7 +25,7 @@ function Answer({ sentence, onSaveNote }) {
 
     const handleEdit = useCallback(() => {
         if (isEditable) {
-            setIsEditable(true);
+            setIsEditable(false);
             onSaveNote(sentence.id, note);
         }
         else setIsEditable(true);
@@ -46,7 +46,7 @@ function Answer({ sentence, onSaveNote }) {
 
             <p><b>Note:</b></p>
             <Textarea
-                rows='5'
+                rows='10'
                 value={note}
                 readOnly={!isEditable}
                 onChange={onChangeHandler}
@@ -80,7 +80,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 showAnswer: false,
-                useAnswer: '',
+                userAnswer: '',
                 currentSentenceIndex: (state.currentSentenceIndex + 1) % state.sentences.length,
             };
         default:
@@ -112,8 +112,15 @@ function Writing() {
     };
 
     const setNormalize = (str) => {
-        return str.toLowerCase().trim().replace(/[‘’]/g, "'");
-    }
+        return str
+            .toLowerCase()                                   // 소문자로 변환
+            .replace(/[^a-z\s]/g, '')   // 영어 알파벳과 공백을 제외한 모든 문자 제거
+            .replace(/\s+/g, ' ')       // 중복된 공백을 단일 공백으로 변환
+            .trim();                                         // 앞뒤 공백 제거
+       // /[^a-z\s]/g: 소문자(a-z) 또는 공백(\s)를 제외한 모든 문자를 ''으로
+       // [^...]: 대괄호 안에 ^가 있으면 그 안에 나열된 문자들을 제외한 모든 문자 매칭
+       // /g: g 플래그는 전역 검색을 의미. 문자열의 모든 위치에서 패턴을 찾음
+    };
 
     const handleCheck = async () => {
         const user = setNormalize(state.userAnswer);
@@ -125,6 +132,14 @@ function Writing() {
                 const response = await axios.patch('http://localhost:3001/review'
                     , {sentence_id: currentSentence.id});
                 dispatch({ type: 'SHOW_ANSWER', payload: true });
+                dispatch({
+                    type: 'SET_SENTENCES',
+                    payload: state.sentences.map(sentence =>
+                        sentence.id === currentSentence.id
+                            ? {...sentence, review_count: sentence.review_count + 1}
+                            : sentence
+                    )
+                });
                 console.log('Review updated: ', response.data);
             } catch (error) {
                 console.error('Error updating review: ', error);
@@ -162,7 +177,7 @@ function Writing() {
             <h2>Writing</h2>
             <p>{currentSentence.id}. {currentSentence.korean_text}</p>
             <Textarea
-                rows='4'
+                rows='2'
                 placeholder=' '
                 value={state.userAnswer}
                 onChange={handleUserAnswerChange}
@@ -171,9 +186,9 @@ function Writing() {
                 {state.showAnswer &&
                     <IsCorrectSpan $isCorrect={state.isCorrect}>{state.isCorrect ? 'Correct answer!' : 'Wrong answer!'}</IsCorrectSpan>
                 }
+                <Button1 $sideMargin onClick={handleCheck}>Check</Button1>
                 <Button1 $sideMargin onClick={handleTryAgain}>Try again</Button1>
                 <Button1 $sideMargin onClick={handleNext}>Next</Button1>
-                <Button1 $sideMargin onClick={handleCheck}>Check</Button1>
             </ButtonWrapper>
             {state.showAnswer && <Answer sentence={currentSentence} onSaveNote={handleSaveNote} />}
         </WholeStyle>

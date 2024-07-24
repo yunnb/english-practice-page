@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from "react";
 import axios from "axios";
-import {Button1, InputWrapper, Textarea} from "../style/Components";
-import {WholeStyle} from "../style/WholeStyle";
+import {Button1, InputWrapper, Textarea} from "../components/Components";
+import {WholeStyle} from "../components/WholeStyle";
 
 function AddWord() {
     const [inputs, setInputs] = useState({

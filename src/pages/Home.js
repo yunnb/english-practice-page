@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {InputWrapper} from "../style/Components";
-import {WholeStyle} from "../style/WholeStyle";
+import {InputWrapper} from "../components/Components";
+import {WholeStyle} from "../components/WholeStyle";
 import styled from "styled-components";
 
 export const MenuButton = styled.button`

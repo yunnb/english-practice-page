@@ -1,21 +1,23 @@
 import React, {useState, useEffect} from "react";
-import Modal from "react-modal";
 import axios from "axios";
-import {Button1, ButtonWrapper, Table} from "../style/Components";
+import {Button1, ButtonWrapper, Table} from "../components/Components";
 import {useNavigate} from "react-router-dom";
-import {WholeStyle} from "../style/WholeStyle";
+import {WholeStyle} from "../components/WholeStyle";
 
 function Word({word}) {
-    const onDoubleClick = (e => {
+
+    const handleDoubleClick = (e) => {
         console.log(e.target);
-    });
+    }
+
     return (
         <>
-            <tr className='underline' onDoubleClick={onDoubleClick}>
+            <tr className='underline' onDoubleClick={handleDoubleClick}>
                 <td className='id'>{word.id}</td>
                 <td>{word.word}</td>
                 <td>{word.meaning}</td>
             </tr>
+
         </>
     );
 }

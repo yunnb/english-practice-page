@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
-import Writing from './components/Writing';
-import Words from './components/Words';
-import AddSentence from './components/AddSentence';
-import Header from './components/Header';
+import Home from './pages/Home';
+import Writing from './pages/Writing';
+import Words from './pages/Words';
+import AddSentence from './pages/AddSentence';
+import Header from './pages/Header';
 import styled from 'styled-components';
-import AddWord from "./components/AddWord";
-import Sentences from "./components/Sentences";
+import AddWord from "./pages/AddWord";
+import Sentences from "./pages/Sentences";
 
 const AppContainer = styled.div`
     padding-top: 60px; /* Header height */
