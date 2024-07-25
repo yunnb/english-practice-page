@@ -27,7 +27,7 @@ function Words() {
     const [words, setWords] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/words')
+        axios.get('http://localhost:3001/word')
             .then(response => {
                 console.log(response.data);
                 setWords(response.data);

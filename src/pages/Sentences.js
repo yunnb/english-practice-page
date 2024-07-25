@@ -7,7 +7,7 @@ function Sentences() {
     const [sentences, setSentences] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/sentences')
+        axios.get('http://localhost:3001/sentence')
             .then(response => {
                 console.log(response.data);
                 setSentences(response.data);
@@ -34,7 +34,7 @@ function Sentences() {
                             <td rowSpan="2" id='id'>{sentence.id}</td>
                             <td>{sentence.korean_text}</td>
                         </tr>
-                        <tr id='underline'>
+                        <tr className='underline'>
                             <td>{sentence.english_text}</td>
                         </tr>
                     </React.Fragment>

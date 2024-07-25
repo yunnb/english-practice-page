@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {InputWrapper} from "../components/Components";
 import {WholeStyle} from "../components/WholeStyle";
 import styled from "styled-components";
+import Calendar from "../components/Calender";
 
 export const MenuButton = styled.button`
     height: 60px;
@@ -25,8 +26,9 @@ function Home() {
                 <h1> </h1>
                 <MenuButton onClick={() => navigate('/writing')}>✒️ Writing</MenuButton>
                 <MenuButton onClick={() => navigate('/words')}>📖 Words</MenuButton>
-                <MenuButton onClick={() => navigate('/sentences')}>📖 Sentences</MenuButton>
+                <MenuButton onClick={() => navigate('/sentence')}>📖 Sentences</MenuButton>
                 <MenuButton onClick={() => navigate('/add-sentence')}>➕ Add Sentence</MenuButton>
+                <Calendar />
             </InputWrapper>
         </WholeStyle>
     );

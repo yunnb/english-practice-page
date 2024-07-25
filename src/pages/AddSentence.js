@@ -22,7 +22,7 @@ function AddSentence() {
 
     const handleAddButton = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/sentences', inputs);
+            const response = await axios.post('http://localhost:3001/sentence', inputs);
             console.log('Sentence added: ', response.data);
 
             setInputs({

@@ -22,7 +22,7 @@ function AddWord() {
     }, [inputs]);
     const handleAddButton = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/words', inputs);
+            const response = await axios.post('http://localhost:3001/word', inputs);
             console.log('Word added: ', response.data);
 
             setInputs({

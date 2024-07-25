@@ -10,26 +10,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // 문장 조회 API
-app.get('/sentences', (req, res) => {
-    db.query('SELECT * FROM sentences', (err, results) => {
+app.get('/sentence', (req, res) => {
+    db.query('SELECT * FROM sentence', (err, results) => {
         if (err) return res.status(500).send(err);
         res.send(results);
     });
 });
 
 // 단어 조회 API
-app.get('/words', (req, res) => {
-    db.query('SELECT * FROM words', (err, results) => {
+app.get('/word', (req, res) => {
+    db.query('SELECT * FROM word', (err, results) => {
         if (err) return res.status(500).send(err);
         res.send(results);
     });
 });
 
 // 문장과 리뷰를 함께 조회하는 API
-app.get('/sentences-with-reviews', (req, res) => {
+
+app.get('/sentence-with-review', (req, res) => {
     const query = `
         SELECT s.*, r.*
-        FROM sentences s
+        FROM sentence s
                  LEFT JOIN review r ON s.id = r.sentence_id
         ORDER BY r.review_date ASC;  /*가장 오래된 복습 날짜가 먼저 오도록. 오름차순*/
     `;
@@ -39,11 +40,17 @@ app.get('/sentences-with-reviews', (req, res) => {
         res.send(results);
     });
 });
+app.get('/activity', (req, res) => {
+    db.query('SELECT * FROM activity', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
 
 // 문장 추가 API
-app.post('/sentences', (req, res) => {
+app.post('/sentence', (req, res) => {
     const { korean_text, english_text, note } = req.body;
-    const query = 'INSERT INTO sentences (korean_text, english_text, note) VALUES (?, ?, ?)';
+    const query = 'INSERT INTO sentence (korean_text, english_text, note) VALUES (?, ?, ?)';
 
     db.query(query, [korean_text, english_text, note], (err, results) => {
         if (err) return res.status(500).send(err);
@@ -66,12 +73,52 @@ app.post('/sentences', (req, res) => {
     });
 });
 
-app.patch('/sentences/:id', (req, res) => {
+// 단어 추가 API
+app.post('/word', (req, res) => {
+    const { word, meaning, note } = req.body;
+    const query = 'INSERT INTO word (word, meaning, note) VALUES (?, ?, ?)';
+
+    db.query(query, [word, meaning, note], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.status(201).send({ id: results.insertId, word, meaning, note });
+    });
+});
+
+app.post('/activity', (req, res) => {
+    const {date, add_count, review_count, level} = req.body; // 수정 필요
+
+    const query = 'INSERT INTO activities (date, add_count, review_count, level) VALUES (?, ?, ?, ?)';
+    db.query(query, [date,add_count, review_count, level], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.status(201).send({ id: results.insertId, date, add_count, review_count, level});
+    });
+})
+
+app.patch('/activity/:id', (req, res) => {
+    const {id} = req.params;
+    const {add_count, review_count, level} = req.body;
+
+    const query = `
+        UPDATE activity
+        SET add_count =? , review_count=?, level=?
+        WHERE id= ?
+    `
+
+    db.query(query, [add_count, review_count, level], (err, results) => {
+        if (err) {
+            console.error('Error updating activity:', err);
+            return res.status(500).send('Error updating activity');
+        }
+        res.status(200).send({ message: `Activity updated successfully for activity ID: ${id}` });
+    });
+});
+
+app.patch('/sentence/:id', (req, res) => {
     const {id} = req.params;  // 요청 URL 에서 'sentenceId' 추출
     const {note} = req.body; // 요청 바디에서 note 추출
 
     const query = `
-        UPDATE sentences
+        UPDATE sentence
         SET note = ?
         WHERE id = ?;
     `
@@ -102,16 +149,6 @@ app.patch('/review', (req, res) => {
     });
 });
 
-// 단어 추가 API
-app.post('/words', (req, res) => {
-    const { word, meaning, note } = req.body;
-    const query = 'INSERT INTO words (word, meaning, note) VALUES (?, ?, ?)';
-
-    db.query(query, [word, meaning, note], (err, results) => {
-        if (err) return res.status(500).send(err);
-        res.status(201).send({ id: results.insertId, word, meaning, note });
-    });
-});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -97,7 +97,7 @@ function Writing() {
             try {
                 // async 와 await 는 주로 비동기 함수 내에서 동기적인 코드를 사용해야 할 때 사용됨
                 // async 함수 내에서 await 키워드를 사용하여 비동기 작업의 완료를 기다리고, 이후 코드를 동기적으로 실행 가능
-                const response = await axios.get('http://localhost:3001/sentences-with-reviews');
+                const response = await axios.get('http://localhost:3001/sentence-with-review');
                 dispatch({type: 'SET_SENTENCES', payload: response.data})
             } catch (error) {console.error('Error fetching data: ', error);}
         };
@@ -157,7 +157,7 @@ function Writing() {
 
     const handleSaveNote = async (id, note) => {
         try {
-            const response = await axios.patch(`http://localhost:3001/sentences/${id}`, {note});
+            const response = await axios.patch(`http://localhost:3001/sentence/${id}`, {note});
             console.log('Note updated: ', response.data);
         } catch (error) {
             console.error('Error updating note: ', error);
