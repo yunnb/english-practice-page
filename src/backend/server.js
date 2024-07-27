@@ -88,7 +88,7 @@ app.post('/activity', (req, res) => {
     const {date, add_count, review_count, level} = req.body; // 수정 필요
 
     const query = 'INSERT INTO activities (date, add_count, review_count, level) VALUES (?, ?, ?, ?)';
-    db.query(query, [date,add_count, review_count, level], (err, results) => {
+    db.query(query, [date, add_count, review_count, level], (err, results) => {
         if (err) return res.status(500).send(err);
         res.status(201).send({ id: results.insertId, date, add_count, review_count, level});
     });

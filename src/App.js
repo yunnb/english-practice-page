@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Writing from './pages/Writing';
 import Words from './pages/Words';
 import AddSentence from './pages/AddSentence';
-import Header from './pages/Header';
+import Header from './components/Header';
 import styled from 'styled-components';
 import AddWord from "./pages/AddWord";
 import Sentences from "./pages/Sentences";
