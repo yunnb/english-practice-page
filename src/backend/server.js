@@ -94,22 +94,21 @@ app.post('/activity', (req, res) => {
     });
 })
 
-app.patch('/activity/:id', (req, res) => {
-    const {id} = req.params;
-    const {add_count, review_count, level} = req.body;
+app.patch('/activity', (req, res) => {
+    const {date} = req.body;
 
     const query = `
         UPDATE activity
-        SET add_count =? , review_count=?, level=?
-        WHERE id= ?
-    `
+        SET review_count = review_count + 1
+        WHERE date = ?
+    `;
 
-    db.query(query, [add_count, review_count, level], (err, results) => {
+    db.query(query, [date], (err) => {
         if (err) {
             console.error('Error updating activity:', err);
             return res.status(500).send('Error updating activity');
         }
-        res.status(200).send({ message: `Activity updated successfully for activity ID: ${id}` });
+        res.status(200).send({ message: `Activity updated successfully for activity date: ${date}` });
     });
 });
 

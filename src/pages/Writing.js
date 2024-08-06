@@ -129,8 +129,9 @@ function Writing() {
         if (user === answer) {
             console.log(`user: ${user}, answer: ${answer} -> is correct.`);
             try {
-                const response = await axios.patch('http://localhost:3001/review'
-                    , {sentence_id: currentSentence.id});
+                const response = await axios.patch('http://localhost:3001/review',
+                    {sentence_id: currentSentence.id});
+
                 dispatch({ type: 'SHOW_ANSWER', payload: true });
                 dispatch({
                     type: 'SET_SENTENCES',
@@ -141,6 +142,14 @@ function Writing() {
                     )
                 });
                 console.log('Review updated: ', response.data);
+
+                // activity
+                const today = getToday();
+                const response2 = await axios.patch(`http://localhost:3001/activity`,
+                    {date: today});
+                
+                console.log('Activity update: ', response2.data);
+
             } catch (error) {
                 console.error('Error updating review: ', error);
             }
@@ -163,6 +172,17 @@ function Writing() {
             console.error('Error updating note: ', error);
         }
     }
+
+    const getToday = useCallback(() => {
+        const today = new Date();
+
+        const year = today.getFullYear();
+        // padStart(2, '0'): 문자열 길이는 2로 하고 이보다 짧을 때 문자열의 시작 부분부터 0 으로 채움
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    });
 
     if (state.sentences.length === 0) {
         return (
