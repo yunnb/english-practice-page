@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const InputWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -8,6 +7,7 @@ export const InputWrapper = styled.div`
     border-radius: 10px; 
     
 `;
+
 export const Textarea = styled.textarea`
     font-family: 'Arial', 'Helvetica', sans-serif;
     font-size: 1em;
@@ -27,7 +27,6 @@ export const ButtonWrapper = styled.div`
     justify-content: right;
 `;
 
-
 export const Button1 = styled.button`
     width: 120px;
     height: 35px;
@@ -39,7 +38,7 @@ export const Button1 = styled.button`
     background-color: darkseagreen;
 
     margin-left: auto;
-
+    
     ${({ $sideMargin }) => $sideMargin && `
       margin-left: 10px; 
   `}
