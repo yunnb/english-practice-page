@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useState} from "react";
 import axios from "axios";
-import { Textarea, InputWrapper, Button1 } from "../components/Components";
-import { WholeStyle } from "../components/WholeStyle";
+import {Button1, InputWrapper, Textarea} from "../components/Components";
+import {Container} from "../styles/CommonStyle";
 
 function AddSentence() {
     const [inputs, setInputs] = useState({
@@ -10,10 +10,10 @@ function AddSentence() {
         note: '',
     });
 
-    const { korean_text, english_text, note } = inputs;
+    const {korean_text, english_text, note} = inputs;
 
     const onChange = useCallback(e => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setInputs({
             ...inputs,
             [name]: value,
@@ -38,7 +38,7 @@ function AddSentence() {
     };
 
     return (
-        <WholeStyle>
+        <Container>
             <InputWrapper>
                 <h2>Add new sentence</h2>
                 <Textarea
@@ -64,7 +64,7 @@ function AddSentence() {
                 />
                 <Button1 onClick={handleAddButton}>Add</Button1>
             </InputWrapper>
-        </WholeStyle>
+        </Container>
     );
 }
 

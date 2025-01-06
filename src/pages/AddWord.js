@@ -1,7 +1,7 @@
-import React, {useState, useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import axios from "axios";
 import {Button1, InputWrapper, Textarea} from "../components/Components";
-import {WholeStyle} from "../components/WholeStyle";
+import {Container} from "../styles/CommonStyle";
 
 function AddWord() {
     const [inputs, setInputs] = useState({
@@ -32,10 +32,12 @@ function AddWord() {
             })
 
             alert('단어가 추가되었습니다!');
-        } catch (error) {console.error('Error adding word: ', error);}
+        } catch (error) {
+            console.error('Error adding word: ', error);
+        }
     };
     return (
-        <WholeStyle>
+        <Container>
             <InputWrapper>
                 <h2>Add new vocabulary</h2>
                 <Textarea
@@ -61,7 +63,7 @@ function AddWord() {
                 />
                 <Button1 onClick={handleAddButton}>Add</Button1>
             </InputWrapper>
-        </WholeStyle>
+        </Container>
     );
 
 }
