@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import AddWord from "./pages/AddWord";
 import Sentences from "./pages/Sentences";
 import Footer from "./components/Footer";
-import {GlobalStyle} from "./styles/WholeStyle";
+import {GlobalStyle} from "./styles/CommonStyle";
 
 const AppContainer = styled.div`
     padding-top: 60px; /* Header height */
