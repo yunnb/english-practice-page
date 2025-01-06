@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import { WholeStyle } from "../components/WholeStyle";
-import {Table} from "../components/Components";
+import {Button1} from "../components/Components";
+import CardItem from "../components/CardItem";
+import {Container, Header} from "../styles/WholeStyle";
+import {useNavigate} from "react-router-dom";
 
 function Sentences() {
+    const navigate = useNavigate();
     const [sentences, setSentences] = useState([]);
 
     useEffect(() => {
@@ -18,30 +21,15 @@ function Sentences() {
     }, []);
 
     return (
-        <WholeStyle>
-            <h2>Sentences</h2>
-            <Table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Text</th>
-                </tr>
-                </thead>
-                <tbody>
-                {sentences.map(sentence => (
-                    <React.Fragment key={sentence.id}>
-                        <tr>
-                            <td rowSpan="2" id='id'>{sentence.id}</td>
-                            <td>{sentence.korean_text}</td>
-                        </tr>
-                        <tr className='underline'>
-                            <td>{sentence.english_text}</td>
-                        </tr>
-                    </React.Fragment>
-                ))}
-                </tbody>
-            </Table>
-        </WholeStyle>
+        <Container>
+            <Header>
+                <h2>Sentences</h2>
+                <Button1 onClick={() => navigate('/add-sentence')}>문장 추가</Button1>
+            </Header>
+            {sentences.map(sentence => (
+                <CardItem data={sentence} type="sentence"/>
+            ))}
+        </Container>
     );
 }
 

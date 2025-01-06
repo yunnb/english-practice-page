@@ -1,26 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Button1, ButtonWrapper, Table} from "../components/Components";
+import {Button1} from "../components/Components";
 import {useNavigate} from "react-router-dom";
-import {WholeStyle} from "../components/WholeStyle";
-
-function Word({word}) {
-
-    const handleDoubleClick = (e) => {
-        console.log(e.target);
-    }
-
-    return (
-        <>
-            <tr className='underline' onDoubleClick={handleDoubleClick}>
-                <td className='id'>{word.id}</td>
-                <td>{word.word}</td>
-                <td>{word.meaning}</td>
-            </tr>
-
-        </>
-    );
-}
+import {Container, Header} from "../styles/WholeStyle";
+import CardItem from "../components/CardItem";
 
 function Words() {
     const navigate = useNavigate();
@@ -38,26 +21,15 @@ function Words() {
     }, []);
 
     return (
-        <WholeStyle>
-            <h2>Words</h2>
-            <ButtonWrapper>
-                <Button1 onClick={() => navigate('/add-word')}>Add word</Button1>
-            </ButtonWrapper>
-            <Table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Word</th>
-                    <th>Meaning</th>
-                </tr>
-                </thead>
-                <tbody>
-                {words.map(word => (
-                    <Word key={word.id} word={word} />
-                ))}
-                </tbody>
-            </Table>
-        </WholeStyle>
+        <Container>
+            <Header>
+                <h2>Words</h2>
+                <Button1 onClick={() => navigate('/add-word')}>단어 추가</Button1>
+            </Header>
+            {words.map(word => (
+                <CardItem data={word} type="word"/>
+            ))}
+        </Container>
     );
 };
 
