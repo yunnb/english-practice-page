@@ -8,6 +8,8 @@ import Header from './components/Header';
 import styled from 'styled-components';
 import AddWord from "./pages/AddWord";
 import Sentences from "./pages/Sentences";
+import Footer from "./components/Footer";
+import {GlobalStyle} from "./styles/WholeStyle";
 
 const AppContainer = styled.div`
     padding-top: 60px; /* Header height */
@@ -16,6 +18,7 @@ const AppContainer = styled.div`
 function App() {
     return (
         <Router>
+            <GlobalStyle/>
             <Header />
             <AppContainer>
                 <Routes>
@@ -27,6 +30,7 @@ function App() {
                     <Route path="/add-word" element={<AddWord />} />
                 </Routes>
             </AppContainer>
+            <Footer />
         </Router>
     );
 }
